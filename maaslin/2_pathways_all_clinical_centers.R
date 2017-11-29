@@ -20,13 +20,12 @@ data <- data / ( metadata$num_wgs_reads / 1e6 )
 
 pseudocount <- 2^6
 
+# Investigate the effect of pseudocount in median vs. variance
 df <- data.frame(var=apply(log2(data+1),2,sd), avg=apply(log2(data+1),2,median))
 p1 <- ggplot(df, aes(x=avg, y=var)) + geom_point() + theme_bw() + xlab("mean(log2(data+1))") + ylab("standard deviation(log2(data+1))") + coord_cartesian(xlim=c(0,10))
 df <- data.frame(var=apply(log2(data+pseudocount),2,sd), avg=apply(log2(data+pseudocount),2,median))
 p2 <- ggplot(df, aes(x=avg, y=var)) + geom_point() + theme_bw() + xlab("mean(log2(data+2^6))") + ylab("standard deviation(log2(data+2^6))") + coord_cartesian(xlim=c(6,8.5))
-pdf("S_pseudocount.pdf",w=8.5,h=4)
 grid.arrange(p1,p2, ncol=2)
-dev.off()
 
 # IA casecontrol outcome
 metadata_ia <- metadata %>% 
@@ -55,7 +54,14 @@ data_ia <- data[ metadata_ia$sample_id , ]
 # filter out sparse pathways
 data_ia <- data_ia[ , apply(data_ia,2,function(x) sum(x>0)) > (nrow(data_ia) * 0.3)  ]
 
-variables <- c("age_at_collection","delivery_simple","cc","breastfeeding","solid_food","IA_casecontrol_outcome","num_wgs_reads")
+# Covariates to control / test
+variables <- c("age_at_collection",
+               "delivery_simple",
+               "cc",
+               "breastfeeding",
+               "solid_food",
+               "IA_casecontrol_outcome",
+               "num_wgs_reads")
 
 res <- Maaslin.wrapper(log2(data_ia + pseudocount), 
                        metadata_ia, 
@@ -98,7 +104,15 @@ data_t1d <- data[ metadata_t1d$sample_id , ]
 # filter out sparse pathways
 data_t1d <- data_t1d[ , apply(data_t1d,2,function(x) sum(x>0)) > (nrow(data_t1d) * 0.3)  ]
 
-variables <- c("age_at_collection","delivery_simple","cc","breastfeeding","solid_food","T1D_casecontrol_outcome","num_wgs_reads")
+# Covariates to control / test
+variables <- c("age_at_collection",
+               "delivery_simple",
+               "cc",
+               "breastfeeding",
+               "solid_food",
+               "T1D_casecontrol_outcome",
+               "num_wgs_reads")
+
 res <- Maaslin.wrapper(log2(data_t1d + pseudocount), 
                        metadata_t1d, 
                        variables = variables, 

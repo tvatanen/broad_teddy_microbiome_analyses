@@ -9,7 +9,7 @@ colnames(species) <- sapply(colnames(species), function(x) strsplit(x,".",fixed 
 load("teddy_metadata.RData")
 
 metadata$sample_id <- paste("X", metadata$sample_id, sep = "")
-# remove samples where breastfeeding data is not available
+# remove samples where breastfeeding information is not available
 metadata <- metadata[ !(is.na(metadata$breastfeeding)) , ]
 metadata <- metadata[ metadata$sample_id %in% rownames(species) , ]
 species <- species[ as.character(metadata$sample_id) , ]
@@ -39,8 +39,15 @@ metadata_ia <- metadata_ia %>% filter(age_wrt_first_pos <= 30)
 species_ia <- species[ metadata_ia$sample_id , ]
 
 # IA casecontrol outcome
-variables <- c("age_at_collection","delivery_simple","cc","breastfeeding","solid_food","IA_casecontrol_outcome","num_wgs_reads")
-#select_IA_cohort <- which(!(is.na(metadata$IA_casecontrol_ind)))
+
+# Covariates to control / test
+variables <- c("age_at_collection",
+               "delivery_simple",
+               "cc",
+               "breastfeeding",
+               "solid_food",
+               "IA_casecontrol_outcome",
+               "num_wgs_reads")
 
 res <- Maaslin.wrapper(species_ia, 
                        metadata_ia, 
@@ -51,8 +58,9 @@ res <- Maaslin.wrapper(species_ia,
                        strVerbosity = "ERROR", 
                        strRandomCovariates = c("subject_id"))
 
-# write results:
+# write/save results:
 write.table(res$IA_casecontrol_outcome, file="1_results_IA.txt", quote = F, row.names = F, sep = "\t")
+save(res , file="1_results_IA.RData")
 
 # one case does not have breastfeeding info, remove also this control
 metadata_t1d <- metadata %>% 
@@ -79,8 +87,15 @@ metadata_t1d <- metadata_t1d %>% filter(age_wrt_t1d <= 30)
 species_t1d <- species[ metadata_t1d$sample_id , ]
 
 # T1D case-control outcome
-variables <- c("age_at_collection","delivery_simple","cc","breastfeeding","solid_food","T1D_casecontrol_outcome","num_wgs_reads")
-#select_T1D_cohort <- which(!(is.na(metadata$T1D_casecontrol_ind)))
+
+# Covariates to control / test
+variables <- c("age_at_collection",
+               "delivery_simple",
+               "cc",
+               "breastfeeding",
+               "solid_food",
+               "T1D_casecontrol_outcome",
+               "num_wgs_reads")
 
 res <- Maaslin.wrapper(species_t1d, 
                        metadata_t1d, 
@@ -91,5 +106,6 @@ res <- Maaslin.wrapper(species_t1d,
                        strVerbosity = "ERROR", 
                        strRandomCovariates = c("subject_id"))
 
-# write results:
+# write/save results:
 write.table(res$T1D_casecontrol_outcome, file="1_results_T1D.txt", quote = F, row.names = F, sep = "\t")
+save(res , file="1_results_T1D.RData")
