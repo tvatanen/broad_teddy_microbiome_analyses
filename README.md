@@ -1,5 +1,7 @@
 # TEDDY study infant gut microbiome analyses by Broad Institute
 
-This repository contains code for Random Forest case-control comparisons and cohort wide MaAsLin association analyses (Table S4) in TEDDY (The Environmental Determinants of Diabetes in the Young) infant gut microbiome analysis (citation to be included). Other analysis software including quality control, taxonomic, and functional profilers is publicly available.
+This repository contains code for Random Forest case-control comparisons and cohort wide MaAsLin association analyses (Table S4) in TEDDY (The Environmental Determinants of Diabetes in the Young) gut microbiome analysis[1] . Other analysis software including quality control, taxonomic, and functional profilers is publicly available.
+
+> [1] Vatanen, T. et al. The human gut microbiome in early-onset type 1 diabetes from the TEDDY study. Nature https://doi.org/10.1038/s41586-018-0620-2 (2018).
 
 Type 1 diabetes (T1D) is an autoimmune disease that targets pancreatic islet beta cells and incorporates both genetic and environmental factors. The latter include complex genetic elements, patient exposures, and the gut microbiome; viral infections and broader dysbioses in the gut microbiome have both been identified as potential causes or contributing factors. However, human studies have yet not identified clear microbial compositional or functional triggers predictive of islet autoimmunity (IA) or T1D. We analyzed 10,913 metagenomes from 783 children’s stool samples collected monthly from birth through five years of age in the TEDDY study to characterize the natural history of the infant gut microbiome in connection to IA, T1D diagnosis, and other common events in early life such as caesarean section and antibiotic treatments. 
